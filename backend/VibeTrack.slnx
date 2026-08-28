@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="VibeTrack.Application/VibeTrack.Application.csproj" />
+  <Project Path="VibeTrack.Domain/VibeTrack.Domain.csproj" />
+  <Project Path="VibeTrack.Infrastructure/VibeTrack.Infrastructure.csproj" />
+  <Project Path="VibeTrack/VibeTrack.Api.csproj" />
+</Solution>
