@@ -25,6 +25,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VibeTrack.Application\VibeTrack.Application.csproj" />
+    <ProjectReference Include="..\VibeTrack.Domain\VibeTrack.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using VibeTrack.Infrastructure.Persistence;
 
 namespace VibeTrack
 {
@@ -10,6 +12,11 @@ namespace VibeTrack
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<VibeTrackDbContext>(options => 
+            {
+                options.UseSqlServer(builder.Configuration["ConnectionString"]);
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
