@@ -1,7 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using VibeTrack.Application.Interfaces;
+using VibeTrack.Application.Services;
+using VibeTrack.Domain.Interfaces;
 using VibeTrack.Infrastructure.Persistence;
+using VibeTrack.Infrastructure.Persistence.Repositories;
 
 namespace VibeTrack
 {
@@ -17,6 +21,9 @@ namespace VibeTrack
             {
                 options.UseSqlServer(builder.Configuration["ConnectionString"]);
             });
+
+            builder.Services.AddScoped<IDailyLogRepository, DailyLogRepository>();
+            builder.Services.AddScoped<IDailyLogService, DailyLogService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
