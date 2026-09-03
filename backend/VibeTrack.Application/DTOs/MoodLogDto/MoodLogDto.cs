@@ -1,0 +1,13 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VibeTrack.Application.DTOs.MoodLogDto
+{
+    public class MoodLogDto
+    {
+        public int Id { get; set; }
+        public DateTime LoggedAt { get; set; }
+        public int EnergyLevel { get; set; }
+        public int Mood { get; set; }
+        public int StressLevel { get; set; }
+    }
+}
