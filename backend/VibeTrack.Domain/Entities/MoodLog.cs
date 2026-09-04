@@ -18,7 +18,7 @@ namespace VibeTrack.Domain.Entities
         public StressLevel StressLevel { get; set; }
         public int StressLevelId { get; set; }
 
-        public DailyStats DailyStats { get; set; }
+        public DailyStat DailyStats { get; set; }
         public int DailyStatsId { get; set; }
 
     }

@@ -3,9 +3,9 @@ using VibeTrack.Domain.Interfaces;
 
 namespace VibeTrack.Infrastructure.Persistence.Repositories
 {
-    public class DailyLogRepository : Repository<DailyLog>, IDailyLogRepository
+    public class DailyStatRepository : Repository<DailyStat>, IDailyStatRepository
     {
-        public DailyLogRepository(VibeTrackDbContext context) : base(context)
+        public DailyStatRepository(VibeTrackDbContext context) : base(context)
         {
             
         }

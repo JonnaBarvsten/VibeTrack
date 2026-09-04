@@ -11,7 +11,7 @@ namespace VibeTrack.Domain.Entities
         public string Notes { get; set; }
 
         public int DailyStatsId { get; set; }
-        public DailyStats DailyStats { get; set; }
+        public DailyStat DailyStats { get; set; }
         public List<Activity> Activities { get; set; }
 
         public User User { get; set; }
