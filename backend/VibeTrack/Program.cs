@@ -25,6 +25,9 @@ namespace VibeTrack
             builder.Services.AddScoped<IDailyLogRepository, DailyLogRepository>();
             builder.Services.AddScoped<IDailyLogService, DailyLogService>();
 
+            builder.Services.AddScoped<IDailyStatRepository, DailyStatRepository>();
+            builder.Services.AddScoped<IDailyStatService, DailyStatService>();
+
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();

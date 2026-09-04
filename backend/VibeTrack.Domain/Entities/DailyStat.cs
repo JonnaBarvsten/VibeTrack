@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VibeTrack.Domain.Entities
 {
-    public class DailyStats
+    public class DailyStat
     {
         public int Id { get; set; }
         [Required]

@@ -73,14 +73,13 @@ namespace VibeTrack.Application.Services
 
                 await _dailyLogRepository.UpdateAsync(existingDailyLog);
 
-                var existingDailyLogDto = new DailyLogDto
+                var DailyLogDto = new DailyLogDto
                 {
                     Id = existingDailyLog.Id,
                     Date = existingDailyLog.Date,
-                    Notes = updateDailyLogDto.Notes
-                };
+                    Notes = existingDailyLog.Notes                };
 
-                return existingDailyLogDto;
+                return DailyLogDto;
             }
 
             return null; 
