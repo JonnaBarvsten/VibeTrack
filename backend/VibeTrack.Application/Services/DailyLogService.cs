@@ -48,7 +48,7 @@ namespace VibeTrack.Application.Services
         {
             var newDailyLog = new DailyLog
             {
-                Date = createDailyLogDto.Date,
+                Date = DateOnly.FromDateTime(DateTime.UtcNow),
                 Notes = createDailyLogDto.Notes
             };
 

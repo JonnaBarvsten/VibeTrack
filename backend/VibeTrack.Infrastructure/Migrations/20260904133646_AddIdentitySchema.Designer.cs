@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VibeTrack.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using VibeTrack.Infrastructure.Persistence;
 namespace VibeTrack.Infrastructure.Migrations
 {
     [DbContext(typeof(VibeTrackDbContext))]
-    partial class VibeTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260904133646_AddIdentitySchema")]
+    partial class AddIdentitySchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

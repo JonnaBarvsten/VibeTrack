@@ -14,7 +14,7 @@ namespace VibeTrack.Infrastructure.Persistence
 
         public DbSet<Activity> Activities { get; set; }
         public DbSet<DailyLog> DailyLogs { get; set; }
-        public DbSet<DailyStats> DailyStats { get; set; }
+        public DbSet<DailyStat> DailyStats { get; set; }
         public DbSet<EnergyLevel> EnergyLevels { get; set; }
         public DbSet<Mood> Moods { get; set; }
         public DbSet<MoodLog> MoodLogs { get; set; }
@@ -27,7 +27,7 @@ namespace VibeTrack.Infrastructure.Persistence
             modelBuilder.Entity<DailyLog>()
                 .HasOne(dl => dl.DailyStats)
                 .WithOne(ds => ds.DailyLog)
-                .HasForeignKey<DailyStats>(ds => ds.DailyLogId);
+                .HasForeignKey<DailyStat>(ds => ds.DailyLogId);
 
             //Dataseeding for EnergyLevel
             modelBuilder.Entity<EnergyLevel>()
