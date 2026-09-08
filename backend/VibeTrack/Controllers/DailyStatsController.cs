@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VibeTrack.Application.DTOs.DailyStats;
 using VibeTrack.Application.Interfaces;
 
@@ -15,18 +17,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDailyStats() 
+        public async Task<IActionResult> GetAllDailyStats([FromQuery] int userId) 
         {
-            var dailyStats = await _dailyStatService.GetAllDailyStatsAsync();
+            var dailyStats = await _dailyStatService.GetAllDailyStatsAsync(userId);
 
             return Ok(dailyStats);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<IActionResult> GetDailyStatById([FromRoute] int id)
+        public async Task<IActionResult> GetDailyStatById([FromRoute] int id, [FromQuery] int userId)
         {
-            var dailyStat = await _dailyStatService.GetDailyStatByIdAsync(id);
+            var dailyStat = await _dailyStatService.GetDailyStatByIdAsync(id, userId);
 
             if(dailyStat != null)
             {
@@ -37,18 +39,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDailyStat([FromBody] CreateDailyStatDto createDailyStatDto)
+        public async Task<IActionResult> AddDailyStat([FromBody] CreateDailyStatDto createDailyStatDto, [FromQuery] int userId )
         {
-            var newDailyStat = await _dailyStatService.AddDailyStatAsync(createDailyStatDto);
+            var newDailyStat = await _dailyStatService.AddDailyStatAsync(createDailyStatDto, userId);
 
             return Created($"/api/dailystats/{newDailyStat.Id}", newDailyStat);
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateDailyStat([FromRoute] int id, [FromBody] UpdateDailyStatDto updateDailyStat) 
+        public async Task<IActionResult> UpdateDailyStat([FromRoute] int id, [FromBody] UpdateDailyStatDto updateDailyStat, [FromQuery] int userId) 
         {
-            var updatedDailyStat = await _dailyStatService.UpdateDailyStatAsync(id, updateDailyStat);
+            var updatedDailyStat = await _dailyStatService.UpdateDailyStatAsync(id, updateDailyStat, userId);
 
             if(updatedDailyStat != null)
             {
@@ -60,9 +62,9 @@ namespace VibeTrack.Api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> DeleteDailyStat([FromRoute] int id)
+        public async Task<IActionResult> DeleteDailyStat([FromRoute] int id, [FromQuery] int userId)
         {
-            var isDeleted = await _dailyStatService.DeleteDailyStatAsync(id);
+            var isDeleted = await _dailyStatService.DeleteDailyStatAsync(id, userId);
 
             if(isDeleted)
             {

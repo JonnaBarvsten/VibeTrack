@@ -8,41 +8,69 @@ namespace VibeTrack.Application.Services
     public class DailyStatService : IDailyStatService
     {
         private readonly IDailyStatRepository _dailyStatRepository;
-        public DailyStatService(IDailyStatRepository dailyStatRepository)
+        private readonly IDailyLogRepository _dailyLogRepository;
+        public DailyStatService(IDailyStatRepository dailyStatRepository, IDailyLogRepository dailyLogRepository)
         {
             _dailyStatRepository = dailyStatRepository;
+            _dailyLogRepository = dailyLogRepository;
         }
-        public async Task<DailyStatDto> AddDailyStatAsync(CreateDailyStatDto createDailyStatDto)
+        public async Task<DailyStatDto?> AddDailyStatAsync(CreateDailyStatDto createDailyStatDto, int userId)
         {
-            var newDailyStat = new DailyStat
+            var dailyLog = await _dailyLogRepository.GetByIdAsync(createDailyStatDto.DailyLogId);
+            if (dailyLog != null && dailyLog.UserId == userId)
             {
-                HoursOfSleep = createDailyStatDto.HoursOfSleep
-            };
+                var newDailyStat = new DailyStat
+                {
+                    HoursOfSleep = createDailyStatDto.HoursOfSleep,
+                     DailyLogId = createDailyStatDto.DailyLogId
+                };
 
-            await _dailyStatRepository.AddAsync(newDailyStat);
+                await _dailyStatRepository.AddAsync(newDailyStat);
 
 
-            var dailyStatDto = new DailyStatDto
+                var dailyStatDto = new DailyStatDto
+                {
+                    Id = newDailyStat.Id,
+                    HoursOfSleep = newDailyStat.HoursOfSleep
+                };
+
+                return dailyStatDto;
+            }
+
+            return null;
+        }
+
+        public async Task<bool> DeleteDailyStatAsync(int id, int userId)
+        {
+            var dailyStat = await _dailyStatRepository.GetByIdAsync(id);
+
+            if (dailyStat == null)
             {
-                Id = newDailyStat.Id,
-                HoursOfSleep = newDailyStat.HoursOfSleep
-            };
+                return false;
+            }
 
-            return dailyStatDto;
+            var dailyLog = await _dailyLogRepository.GetByIdAsync(dailyStat.DailyLogId);
+
+            if (dailyLog != null && dailyLog.UserId == userId) 
+            {
+                var deletedEntity = await _dailyStatRepository.DeleteAsync(id);
+                return true;
+            }
+
+            return false;
         }
 
-        public async Task<bool> DeleteDailyStatAsync(int id)
+        public async Task<List<DailyStatDto>> GetAllDailyStatsAsync(int userId)
         {
-            var deletedEntity = await _dailyStatRepository.DeleteAsync(id);
+            var userLog = await _dailyLogRepository.GetAllAsync();
+            var userLogIds = userLog.Where(dl => dl.UserId == userId)
+                .Select(dl => dl.Id)
+                .ToList();
 
-            return deletedEntity != null;
-        }
-
-        public async Task<List<DailyStatDto>> GetAllDailyStatsAsync()
-        {
             var dailyStats = await _dailyStatRepository.GetAllAsync();
+            var userStats = dailyStats.Where(ds => userLogIds.Contains(ds.DailyLogId));
 
-            var newDailyStatsDto = dailyStats.Select(d => new DailyStatDto 
+            var newDailyStatsDto = userStats.Select(d => new DailyStatDto
             {
                 Id = d.Id,
                 HoursOfSleep = d.HoursOfSleep
@@ -51,11 +79,18 @@ namespace VibeTrack.Application.Services
             return newDailyStatsDto;
         }
 
-        public async Task<DailyStatDto?> GetDailyStatByIdAsync(int id)
+        public async Task<DailyStatDto?> GetDailyStatByIdAsync(int id, int userId)
         {
             var dailyStat = await _dailyStatRepository.GetByIdAsync(id);
 
-            if (dailyStat != null)
+            if (dailyStat == null)
+            {
+                return null;
+            }
+
+            var userLog = await _dailyLogRepository.GetByIdAsync(dailyStat.DailyLogId);
+
+            if (userLog != null && userLog.UserId == userId)
             {
                 var dailyStatDto = new DailyStatDto
                 {
@@ -66,14 +101,21 @@ namespace VibeTrack.Application.Services
                 return dailyStatDto;
             }
 
-            return null; 
+            return null;
         }
 
-        public async Task<DailyStatDto?> UpdateDailyStatAsync(int id, UpdateDailyStatDto updateDailyStatDto)
+        public async Task<DailyStatDto?> UpdateDailyStatAsync(int id, UpdateDailyStatDto updateDailyStatDto, int userId)
         {
             var existingDailyStat = await _dailyStatRepository.GetByIdAsync(id);
 
-            if(existingDailyStat != null)
+            if(existingDailyStat == null)
+            {
+                return null;
+            }
+
+            var userLog = await _dailyLogRepository.GetByIdAsync(existingDailyStat.DailyLogId);
+
+            if (userLog != null && userLog.UserId == userId)
             {
                 existingDailyStat.HoursOfSleep = updateDailyStatDto.HoursOfSleep;
 

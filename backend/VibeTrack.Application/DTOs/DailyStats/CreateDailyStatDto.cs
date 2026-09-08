@@ -7,5 +7,8 @@ namespace VibeTrack.Application.DTOs.DailyStats
         [Required]
         [Range(0, 24)]
         public decimal HoursOfSleep { get; set; }
+
+        [Required]
+        public int DailyLogId { get; set; }
     }
 }
