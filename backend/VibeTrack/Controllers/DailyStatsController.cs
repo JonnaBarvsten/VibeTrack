@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VibeTrack.Application.DTOs.DailyStats;
 using VibeTrack.Application.Interfaces;
 
@@ -43,7 +41,7 @@ namespace VibeTrack.Api.Controllers
         {
             var newDailyStat = await _dailyStatService.AddDailyStatAsync(createDailyStatDto, userId);
 
-            return Created($"/api/dailystats/{newDailyStat.Id}", newDailyStat);
+            return CreatedAtAction(nameof(GetDailyStatById), new { id = newDailyStat.Id }, newDailyStat);
         }
 
         [HttpPut]

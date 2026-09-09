@@ -15,18 +15,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDailyLogs() 
+        public async Task<IActionResult> GetAllDailyLogs([FromQuery] int userId) 
         {
-            var dailyLogs = await _dailyService.GetAllDailyLogsAsync();
+            var dailyLogs = await _dailyService.GetAllDailyLogsAsync(userId);
 
             return Ok(dailyLogs);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<IActionResult> GetDailyLogById([FromRoute] int id)
+        public async Task<IActionResult> GetDailyLogById([FromRoute] int id, [FromQuery] int userId)
         {
-            var dailyLog = await _dailyService.GetDailyLogByIdAsync(id);
+            var dailyLog = await _dailyService.GetDailyLogByIdAsync(id, userId);
 
             if(dailyLog != null)
             {
@@ -38,18 +38,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDailyLog([FromBody] CreateDailyLogDto createDailyLogDto)
+        public async Task<IActionResult> AddDailyLog([FromBody] CreateDailyLogDto createDailyLogDto, [FromQuery] int userId)
         {
-            var newDailyLog = await _dailyService.AddDailyLogAsync(createDailyLogDto);
+            var newDailyLog = await _dailyService.AddDailyLogAsync(createDailyLogDto, userId);
 
-            return Created($"/api/dailylogs/{newDailyLog.Id}", newDailyLog);
+            return CreatedAtAction(nameof(GetDailyLogById), new { id = newDailyLog.Id, userId = userId }, newDailyLog);
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateDailyLog([FromRoute] int id, [FromBody] UpdateDailyLogDto updateDailyLogDto) 
+        public async Task<IActionResult> UpdateDailyLog([FromRoute] int id, [FromBody] UpdateDailyLogDto updateDailyLogDto, [FromQuery] int userId) 
         {
-            var updatedDailyLog = await _dailyService.UpdateDailyLogAsync(id, updateDailyLogDto);
+            var updatedDailyLog = await _dailyService.UpdateDailyLogAsync(id, updateDailyLogDto, userId);
 
             if(updatedDailyLog != null)
             {
@@ -61,9 +61,9 @@ namespace VibeTrack.Api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> DeleteDailyLog([FromRoute] int id)
+        public async Task<IActionResult> DeleteDailyLog([FromRoute] int id, [FromQuery] int userId)
         {
-            var isDeleted = await _dailyService.DeleteDailyLogAsync(id);
+            var isDeleted = await _dailyService.DeleteDailyLogAsync(id, userId);
 
             if(isDeleted)
             {
