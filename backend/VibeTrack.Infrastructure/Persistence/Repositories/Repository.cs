@@ -31,7 +31,7 @@ namespace VibeTrack.Infrastructure.Persistence.Repositories
 
             return null; 
         }
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }

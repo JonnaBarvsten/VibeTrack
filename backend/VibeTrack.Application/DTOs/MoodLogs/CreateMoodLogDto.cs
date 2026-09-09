@@ -4,6 +4,9 @@ namespace VibeTrack.Application.DTOs.MoodLogDto
 {
     public class CreateMoodLogDto
     {
+        [Required]
+        public int DailyStatsId { get; set; }
+
         [Range(0, 5)]
         public int EnergyLevel { get; set; }
 

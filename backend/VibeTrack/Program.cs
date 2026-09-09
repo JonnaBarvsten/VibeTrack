@@ -36,6 +36,9 @@ namespace VibeTrack
             builder.Services.AddScoped<IDailyStatRepository, DailyStatRepository>();
             builder.Services.AddScoped<IDailyStatService, DailyStatService>();
 
+            builder.Services.AddScoped<IMoodLogRepository, MoodLogRepository>();
+            builder.Services.AddScoped<IMoodLogService, MoodLogService>();
+
             builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddControllers();

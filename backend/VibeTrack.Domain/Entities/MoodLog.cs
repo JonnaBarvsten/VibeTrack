@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VibeTrack.Domain.Entities
+﻿namespace VibeTrack.Domain.Entities
 {
     public class MoodLog
     {
