@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public decimal HoursOfSleep { get; set; }
+        public int DailyLogId { get; set; }
     }
 }

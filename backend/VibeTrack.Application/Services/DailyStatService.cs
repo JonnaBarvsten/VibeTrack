@@ -31,7 +31,8 @@ namespace VibeTrack.Application.Services
                 var dailyStatDto = new DailyStatDto
                 {
                     Id = newDailyStat.Id,
-                    HoursOfSleep = newDailyStat.HoursOfSleep
+                    HoursOfSleep = newDailyStat.HoursOfSleep,
+                    DailyLogId = newDailyStat.DailyLogId
                 };
 
                 return dailyStatDto;
@@ -73,7 +74,8 @@ namespace VibeTrack.Application.Services
             var newDailyStatsDto = userStats.Select(d => new DailyStatDto
             {
                 Id = d.Id,
-                HoursOfSleep = d.HoursOfSleep
+                HoursOfSleep = d.HoursOfSleep,
+                DailyLogId = d.DailyLogId
             }).ToList();
 
             return newDailyStatsDto;
@@ -95,7 +97,8 @@ namespace VibeTrack.Application.Services
                 var dailyStatDto = new DailyStatDto
                 {
                     Id = dailyStat.Id,
-                    HoursOfSleep = dailyStat.HoursOfSleep
+                    HoursOfSleep = dailyStat.HoursOfSleep,
+                    DailyLogId = dailyStat.DailyLogId
                 };
 
                 return dailyStatDto;
@@ -124,7 +127,8 @@ namespace VibeTrack.Application.Services
                 var dailyStatDto = new DailyStatDto
                 {
                     Id = existingDailyStat.Id,
-                    HoursOfSleep = existingDailyStat.HoursOfSleep
+                    HoursOfSleep = existingDailyStat.HoursOfSleep,
+                    DailyLogId = existingDailyStat.DailyLogId
                 };
 
                 return dailyStatDto;
