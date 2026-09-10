@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -38,6 +37,9 @@ namespace VibeTrack
 
             builder.Services.AddScoped<IMoodLogRepository, MoodLogRepository>();
             builder.Services.AddScoped<IMoodLogService, MoodLogService>();
+
+            builder.Services.AddScoped<IActivityService, ActivityService>();
+            builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
 

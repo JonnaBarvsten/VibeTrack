@@ -30,7 +30,6 @@ namespace VibeTrack.Application.Services
 
             await _dailyStatRepository.AddAsync(newDailyStat);
 
-
             var dailyStatDto = new DailyStatDto
             {
                 Id = newDailyStat.Id,
@@ -39,7 +38,6 @@ namespace VibeTrack.Application.Services
             };
 
             return dailyStatDto;
-
         }
 
         public async Task<bool> DeleteDailyStatAsync(int id, int userId)
@@ -58,8 +56,9 @@ namespace VibeTrack.Application.Services
                 return false;
             }
 
-                var deletedEntity = await _dailyStatRepository.DeleteAsync(id);
-                return true;
+            await _dailyStatRepository.DeleteAsync(id);
+            
+            return true;
         }
 
         public async Task<List<DailyStatDto>> GetAllDailyStatsAsync(int userId)
@@ -72,14 +71,14 @@ namespace VibeTrack.Application.Services
             var dailyStats = await _dailyStatRepository.GetAllAsync();
             var userStats = dailyStats.Where(ds => userLogIds.Contains(ds.DailyLogId));
 
-            var newDailyStatsDto = userStats.Select(d => new DailyStatDto
+            var dailyStatsDto = userStats.Select(d => new DailyStatDto
             {
                 Id = d.Id,
                 HoursOfSleep = d.HoursOfSleep,
                 DailyLogId = d.DailyLogId
             }).ToList();
 
-            return newDailyStatsDto;
+            return dailyStatsDto;
         }
 
         public async Task<DailyStatDto?> GetDailyStatByIdAsync(int id, int userId)
@@ -93,7 +92,7 @@ namespace VibeTrack.Application.Services
 
             var userLog = await _dailyLogRepository.GetByIdAsync(dailyStat.DailyLogId);
 
-            if (userLog == null && userLog.UserId != userId)
+            if (userLog == null || userLog.UserId != userId)
             {
                 return null;
             }
@@ -118,7 +117,7 @@ namespace VibeTrack.Application.Services
 
             var userLog = await _dailyLogRepository.GetByIdAsync(existingDailyStat.DailyLogId);
 
-            if (userLog == null && userLog.UserId != userId)
+            if (userLog == null || userLog.UserId != userId)
             {
                 return null;
             }
@@ -134,7 +133,6 @@ namespace VibeTrack.Application.Services
                 };
 
                 return dailyStatDto;
-
         }
     }
 }

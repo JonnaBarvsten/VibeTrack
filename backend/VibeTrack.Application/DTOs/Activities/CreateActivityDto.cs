@@ -10,5 +10,8 @@ namespace VibeTrack.Application.DTOs.Activities
 
         [Range(1, 1440)]
         public int TotalTimeMinutes { get; set; }
+
+        [Required]
+        public int DailyLogId { get; set; }
     }
 }
