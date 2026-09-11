@@ -22,15 +22,17 @@ namespace VibeTrack
 
             // Add services to the container.
 
-            builder.Services.AddDbContext<VibeTrackDbContext>(options => 
+            builder.Services.AddDbContext<VibeTrackDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration["ConnectionString"]);
             });
 
-            builder.Services.AddIdentityApiEndpoints<User>(options =>
+
+            builder.Services.AddIdentityCore<User>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            }).AddRoles<IdentityRole<int>>()
+            })
+            .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<VibeTrackDbContext>();
 
             var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
@@ -86,7 +88,7 @@ namespace VibeTrack
                     {
                         OnMessageReceived = context =>
                         {
-                            if (context.Request.Cookies.TryGetValue("jwt", out var token))
+                            if (context.Request.Cookies.TryGetValue("Jwt", out var token))
                             {
                                 context.Token = token;
                             }

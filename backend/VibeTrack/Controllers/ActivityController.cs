@@ -4,9 +4,7 @@ using VibeTrack.Application.Interfaces;
 
 namespace VibeTrack.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ActivityController : ControllerBase
+    public class ActivityController : BaseApiController
     {
         private readonly IActivityService _activityService;
 
@@ -16,18 +14,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllActivities([FromQuery] int userId)
+        public async Task<IActionResult> GetAllActivities()
         {
-            var activities = await _activityService.GetAllActivitiesAsync(userId);
+            var activities = await _activityService.GetAllActivitiesAsync(UserId);
 
             return Ok(activities);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<IActionResult> GetActivityById([FromRoute] int id, [FromQuery] int userId)
+        public async Task<IActionResult> GetActivityById([FromRoute] int id)
         {
-            var activity = await _activityService.GetActivityByIdAsync(id, userId);
+            var activity = await _activityService.GetActivityByIdAsync(id, UserId);
 
             if (activity != null)
             {
@@ -38,23 +36,23 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddActivity([FromBody] CreateActivityDto createActivityDto, [FromQuery] int userId)
+        public async Task<IActionResult> AddActivity([FromBody] CreateActivityDto createActivityDto)
         {
-            var newActivity = await _activityService.AddActivityAsync(createActivityDto, userId);
+            var newActivity = await _activityService.AddActivityAsync(createActivityDto, UserId);
 
             if (newActivity == null)
             {
                 return BadRequest();
             }
 
-            return CreatedAtAction(nameof(GetActivityById),new { id = newActivity.Id, userId = userId },newActivity);
+            return CreatedAtAction(nameof(GetActivityById),new { id = newActivity.Id },newActivity);
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateActivityDto updateActivityDto, [FromQuery] int userId)
+        public async Task<IActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateActivityDto updateActivityDto)
         {
-            var updatedActivity = await _activityService.UpdateActivityAsync(id, updateActivityDto, userId);
+            var updatedActivity = await _activityService.UpdateActivityAsync(id, updateActivityDto, UserId);
 
             if (updatedActivity != null)
             {
@@ -66,9 +64,9 @@ namespace VibeTrack.Api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> DeleteActivity([FromRoute] int id, [FromQuery] int userId)
+        public async Task<IActionResult> DeleteActivity([FromRoute] int id)
         {
-            var isDeleted = await _activityService.DeleteActivityAsync(id, userId);
+            var isDeleted = await _activityService.DeleteActivityAsync(id, UserId);
 
             if (isDeleted)
             {

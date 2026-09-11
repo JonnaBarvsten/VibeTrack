@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VibeTrack.Api.Extensions;
 using VibeTrack.Application.DTOs.Auth;
 using VibeTrack.Application.Interfaces;
 
@@ -19,12 +20,17 @@ namespace VibeTrack.Api.Controllers
         {
             var result = await _authService.RegisterAsync(registerDto);
 
-            if (result.IsSuccess)
+            if (!result.IsSuccess)
             {
-                return Ok(result);
+                return BadRequest(result);
             }
 
-            return BadRequest(result);
+            if (!string.IsNullOrEmpty(result.Token))
+            {
+                Response.AppendJwtCookie(result.Token);
+            }
+                return Ok(result);
+
         }
 
         [HttpPost("login")]
@@ -32,12 +38,24 @@ namespace VibeTrack.Api.Controllers
         {
             var result = await _authService.LoginAsync(login);
 
-            if (result.IsSuccess)
+            if (!result.IsSuccess)
             {
-                return Ok(result);
+                return BadRequest(result);
             }
 
-            return BadRequest(result);
+            if (!string.IsNullOrEmpty(result.Token))
+            {
+                Response.AppendJwtCookie(result.Token);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.DeleteJwtCookie();
+            return Ok(new { message = "Utloggad" });
         }
     }
 }

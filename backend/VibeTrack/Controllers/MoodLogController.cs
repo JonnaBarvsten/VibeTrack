@@ -4,9 +4,7 @@ using VibeTrack.Application.Interfaces;
 
 namespace VibeTrack.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MoodLogController : ControllerBase
+    public class MoodLogController : BaseApiController
     {
         private readonly IMoodLogService _moodLogService;
         public MoodLogController(IMoodLogService moodLogService)
@@ -15,18 +13,18 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMoodLogs([FromQuery] int userId)
+        public async Task<IActionResult> GetAllMoodLogs()
         {
-            var moodLogs = await _moodLogService.GetAllMoodLogsAsync(userId);
+            var moodLogs = await _moodLogService.GetAllMoodLogsAsync(UserId);
 
             return Ok(moodLogs);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<IActionResult> GetMoodLogById([FromRoute] int id, [FromQuery] int userId)
+        public async Task<IActionResult> GetMoodLogById([FromRoute] int id)
         {
-            var moodLog = await _moodLogService.GetMoodLogByIdAsync(id, userId);
+            var moodLog = await _moodLogService.GetMoodLogByIdAsync(id, UserId);
 
             if(moodLog != null)
             {
@@ -37,23 +35,23 @@ namespace VibeTrack.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMoodLog([FromBody] CreateMoodLogDto createMoodLogDto, [FromQuery] int userId)
+        public async Task<IActionResult> AddMoodLog([FromBody] CreateMoodLogDto createMoodLogDto)
         {
-            var newMoodLog = await _moodLogService.AddMoodLogAsync(createMoodLogDto, userId);
+            var newMoodLog = await _moodLogService.AddMoodLogAsync(createMoodLogDto, UserId);
 
             if (newMoodLog == null)
             {
                 return BadRequest("Obehörig eller ogiltig dagsstatistik.");
             }
 
-            return CreatedAtAction(nameof(GetMoodLogById), new { id = newMoodLog.Id, userId = userId }, newMoodLog);
+            return CreatedAtAction(nameof(GetMoodLogById), new { id = newMoodLog.Id }, newMoodLog);
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateMoodLog([FromRoute] int id, [FromBody] UpdateMoodLogDto updateMoodLogDto, [FromQuery] int userId)
+        public async Task<IActionResult> UpdateMoodLog([FromRoute] int id, [FromBody] UpdateMoodLogDto updateMoodLogDto)
         {
-            var updateMoodLog = await _moodLogService.UpdateMoodLogAsync(id, updateMoodLogDto, userId);
+            var updateMoodLog = await _moodLogService.UpdateMoodLogAsync(id, updateMoodLogDto, UserId);
 
             if(updateMoodLog != null)
             {
@@ -65,9 +63,9 @@ namespace VibeTrack.Api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> deleteMoodLog([FromRoute] int id, [FromQuery] int userId)
+        public async Task<IActionResult> DeleteMoodLog([FromRoute] int id)
         {
-            var isDeleted = await _moodLogService.DeleteMoodLogAsync(id, userId);
+            var isDeleted = await _moodLogService.DeleteMoodLogAsync(id, UserId);
 
             if (isDeleted)
             {
