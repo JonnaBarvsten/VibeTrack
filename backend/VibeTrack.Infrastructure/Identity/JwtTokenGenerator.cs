@@ -13,16 +13,17 @@ namespace VibeTrack.Infrastructure.Identity
         {
             _jwtSettings = jwtSettings;
         }
-        public string GenerateToken(int userId, string email, string username, string role = "User")
+        public string GenerateToken(int userId, string email, string username, IList<string> roles)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.PreferredUsername, username),
-                new Claim(ClaimTypes.Role, role)
             };
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
 

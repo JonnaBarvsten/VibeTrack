@@ -2,6 +2,6 @@
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(int userId, string email, string username, string role = "User");
+        string GenerateToken(int userId, string email, string username, IList<string> roles);
     }
 }

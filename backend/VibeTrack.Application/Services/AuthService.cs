@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using VibeTrack.Application.DTOs.Auth;
 using VibeTrack.Application.Interfaces;
 using VibeTrack.Domain.Entities;
@@ -25,7 +26,9 @@ namespace VibeTrack.Application.Services
 
                 if (isValidPassword)
                 {
-                    var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Email!, user.UserName!);
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Email!, user.UserName!, roles);
 
                     return new AuthResponseDto
                     {
@@ -76,7 +79,9 @@ namespace VibeTrack.Application.Services
 
             if (result.Succeeded)
             {
-                var token = _jwtTokenGenerator.GenerateToken(newUser.Id, newUser.Email!, newUser.UserName!);
+                await _userManager.AddToRoleAsync(newUser, "User");
+                var roles = await _userManager.GetRolesAsync(newUser);
+                var token = _jwtTokenGenerator.GenerateToken(newUser.Id, newUser.Email!, newUser.UserName!, roles);
 
                 var authResponseDto = new AuthResponseDto
                 {
@@ -91,6 +96,21 @@ namespace VibeTrack.Application.Services
             var error = result.Errors.FirstOrDefault()?.Description ?? "Registrering Misslyckades";
 
             return new AuthResponseDto { IsSuccess = false, Message = error };
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            await _userManager.DeleteAsync(user);
+
+            return true;
         }
     }
 }

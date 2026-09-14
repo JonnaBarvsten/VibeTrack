@@ -103,6 +103,8 @@ namespace VibeTrack
 
             var app = builder.Build();
 
+            RoleSeeder.SeedRolesAndAdminAsync(app.Services).GetAwaiter().GetResult();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
