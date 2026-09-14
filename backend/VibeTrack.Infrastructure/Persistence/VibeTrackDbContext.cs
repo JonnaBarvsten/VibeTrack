@@ -29,6 +29,9 @@ namespace VibeTrack.Infrastructure.Persistence
                 .WithOne(ds => ds.DailyLog)
                 .HasForeignKey<DailyStat>(ds => ds.DailyLogId);
 
+            modelBuilder.Entity<DailyLog>().HasIndex(dl => dl.UserId);
+            modelBuilder.Entity<DailyLog>().HasIndex(dl => dl.Date);
+
             //Dataseeding for EnergyLevel
             modelBuilder.Entity<EnergyLevel>()
                .HasData(
