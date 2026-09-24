@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VibeTrack.Application.DTOs.DailyStats;
 using VibeTrack.Application.Interfaces;
 
@@ -39,6 +38,11 @@ namespace VibeTrack.Api.Controllers
         public async Task<IActionResult> AddDailyStat([FromBody] CreateDailyStatDto createDailyStatDto)
         {
             var newDailyStat = await _dailyStatService.AddDailyStatAsync(createDailyStatDto, UserId);
+
+            if (newDailyStat == null)
+            {
+                return BadRequest("Kunde inte skapa dagsstatistik.");
+            }
 
             return CreatedAtAction(nameof(GetDailyStatById), new { id = newDailyStat.Id }, newDailyStat);
         }

@@ -16,19 +16,39 @@ namespace VibeTrack.Application.Services
         }
         public async Task<DailyStatDto?> AddDailyStatAsync(CreateDailyStatDto createDailyStatDto, int userId)
         {
-            var dailyLog = await _dailyLogRepository.GetByIdAsync(createDailyStatDto.DailyLogId);
-            if (dailyLog == null || dailyLog.UserId != userId)
+            DailyLog? dailyLog = null;
+
+            if(createDailyStatDto.DailyLogId > 0)
             {
-                return null;
+                dailyLog = await _dailyLogRepository.GetByIdAsync(createDailyStatDto.DailyLogId);
+
+                if (dailyLog == null || dailyLog.UserId != userId)
+                {
+                    return null;
+                }
+            }
+
+            if(dailyLog == null)
+            {
+                dailyLog = new DailyLog
+                {
+                    UserId = userId,
+                    Date = DateOnly.FromDateTime(DateTime.UtcNow)
+                };
+
+                await _dailyLogRepository.AddAsync(dailyLog);
             }
 
             var newDailyStat = new DailyStat
             {
                 HoursOfSleep = createDailyStatDto.HoursOfSleep,
-                DailyLogId = createDailyStatDto.DailyLogId
+                DailyLogId = dailyLog.Id
             };
 
             await _dailyStatRepository.AddAsync(newDailyStat);
+
+            dailyLog.DailyStatsId = newDailyStat.Id;
+            await _dailyLogRepository.UpdateAsync(dailyLog);
 
             var dailyStatDto = new DailyStatDto
             {
