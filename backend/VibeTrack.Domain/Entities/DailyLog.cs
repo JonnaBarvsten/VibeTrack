@@ -8,7 +8,7 @@ namespace VibeTrack.Domain.Entities
         public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         
         [MaxLength(1000)]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         public int DailyStatsId { get; set; }
         public DailyStat DailyStats { get; set; }
