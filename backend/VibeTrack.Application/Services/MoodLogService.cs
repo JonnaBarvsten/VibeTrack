@@ -1,4 +1,4 @@
-﻿using VibeTrack.Application.DTOs.MoodLogDto;
+﻿using VibeTrack.Application.DTOs.MoodLogs;
 using VibeTrack.Application.Interfaces;
 using VibeTrack.Domain.Entities;
 using VibeTrack.Domain.Interfaces;
@@ -148,6 +148,11 @@ namespace VibeTrack.Application.Services
             };
 
             return moodLogDto;
+        }
+
+        public async Task<List<Mood>> GetAllMoodsAsync()
+        {
+            return await _moodLogRepository.GetAllMoodsAsync();
         }
     }
 }

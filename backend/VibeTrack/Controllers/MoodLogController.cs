@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VibeTrack.Application.DTOs.MoodLogDto;
+using VibeTrack.Application.DTOs.MoodLogs;
 using VibeTrack.Application.Interfaces;
 
 namespace VibeTrack.Api.Controllers
@@ -74,6 +74,13 @@ namespace VibeTrack.Api.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet("moods")]
+        public async Task<IActionResult> GetAllMoods()
+        {
+            var moods = await _moodLogService.GetAllMoodsAsync();
+            return Ok(moods);
         }
     }
 }

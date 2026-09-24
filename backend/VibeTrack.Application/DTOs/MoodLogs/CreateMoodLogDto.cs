@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VibeTrack.Application.DTOs.MoodLogDto
+namespace VibeTrack.Application.DTOs.MoodLogs
 {
     public class CreateMoodLogDto
     {

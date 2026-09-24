@@ -25,5 +25,10 @@ namespace VibeTrack.Infrastructure.Persistence.Repositories
 
             return isValid;
         }
+
+        public async Task<List<Mood>> GetAllMoodsAsync()
+        {
+            return await _context.Moods.ToListAsync();
+        }
     }
 }
