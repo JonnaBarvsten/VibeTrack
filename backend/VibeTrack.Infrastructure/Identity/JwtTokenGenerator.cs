@@ -20,7 +20,7 @@ namespace VibeTrack.Infrastructure.Identity
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.PreferredUsername, username),
+                new Claim(ClaimTypes.Name, username),
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
