@@ -1,4 +1,6 @@
 ﻿using VibeTrack.Application.DTOs.DailyLogs;
+using VibeTrack.Application.DTOs.DailyStats;
+using VibeTrack.Application.DTOs.MoodLogs;
 using VibeTrack.Application.Interfaces;
 using VibeTrack.Domain.Entities;
 using VibeTrack.Domain.Interfaces;
@@ -15,38 +17,35 @@ namespace VibeTrack.Application.Services
 
         public async Task<List<DailyLogDto>> GetAllDailyLogsAsync(int userId)
         {
-            var dailyLogs = await _dailyLogRepository.GetAllAsync();
-            
-            var userLog = dailyLogs.Where(d => d.UserId == userId); 
+            var userLogs = await _dailyLogRepository.GetLogsByUserIdWithDetailsAsync(userId);
 
-            var dailyLogsDto = userLog.Select(d => new DailyLogDto 
+            return userLogs.Select(d => new DailyLogDto
             {
                 Id = d.Id,
                 Date = d.Date,
-                Notes = d.Notes
-            }).ToList();
+                Notes = d.Notes,
 
-            return dailyLogsDto;
-        }
-        public async Task<DailyLogDto?> GetDailyLogByIdAsync(int id, int userId)
-        {
-            var dailyLog = await _dailyLogRepository.GetByIdAsync(id);
-
-
-            if(dailyLog != null && dailyLog.UserId == userId)
-            {
-                var dailyLogDto = new DailyLogDto
+                DailyStats = d.DailyStats != null ? new DailyStatDto
                 {
-                    Id = dailyLog.Id,
-                    Date = dailyLog.Date,
-                    Notes= dailyLog.Notes
-                };
+                    Id = d.DailyStats.Id,
+                    HoursOfSleep = d.DailyStats.HoursOfSleep,
+                    DailyLogId = d.DailyStats.DailyLogId,
 
-                return dailyLogDto;
-            }
-
-            return null;
+                    MoodLogs = d.DailyStats.MoodLogs != null
+                        ? d.DailyStats.MoodLogs.Select(m => new MoodLogDto
+                        {
+                            Id = m.Id,
+                            LoggedAt = m.LoggedAt,
+                            DailyStatsId = m.DailyStatsId,
+                            Mood = m.MoodId,
+                            EnergyLevel = m.EnergyLevelId,
+                            StressLevel = m.StressLevelId
+                        }).ToList()
+                        : new List<MoodLogDto>()
+                } : null
+            }).ToList();
         }
+
         public async Task<DailyLogDto?> AddDailyLogAsync(CreateDailyLogDto createDailyLogDto, int userId)
         {
             var newDailyLog = new DailyLog
@@ -101,6 +100,33 @@ namespace VibeTrack.Application.Services
             }
 
             return false;
+        }
+
+        public async Task<DailyLogDto?> GetDailyLogByIdAsync(int id, int userId)
+        {
+            var userLogs = await _dailyLogRepository.GetLogsByUserIdWithDetailsAsync(userId);
+
+            return userLogs.Where(d => d.Id == id).Select(d => new DailyLogDto
+            {
+                Id = d.Id,
+                Date = d.Date,
+                Notes = d.Notes,
+                DailyStats = d.DailyStats != null ? new DailyStatDto
+                {
+                    Id = d.DailyStats.Id,
+                    HoursOfSleep = d.DailyStats.HoursOfSleep,
+                    DailyLogId = d.DailyStats.DailyLogId,
+                    MoodLogs = d.DailyStats.MoodLogs?.Select(m => new MoodLogDto
+                    {
+                        Id = m.Id,
+                        LoggedAt = m.LoggedAt,
+                        DailyStatsId = m.DailyStatsId,
+                        Mood = m.MoodId,
+                        EnergyLevel = m.EnergyLevelId,
+                        StressLevel = m.StressLevelId
+                    }).ToList() ?? new List<MoodLogDto>()
+                } : null
+            }).FirstOrDefault();
         }
     }
 }
