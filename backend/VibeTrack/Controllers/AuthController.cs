@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using VibeTrack.Api.Extensions;
 using VibeTrack.Application.DTOs.Auth;
 using VibeTrack.Application.Interfaces;
@@ -30,7 +32,6 @@ namespace VibeTrack.Api.Controllers
                 Response.AppendJwtCookie(result.Token);
             }
                 return Ok(result);
-
         }
 
         [HttpPost("login")]
@@ -51,11 +52,22 @@ namespace VibeTrack.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
             Response.DeleteJwtCookie();
             return Ok(new { message = "Utloggad" });
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetCurrentUser()
+        {
+            return Ok(new
+            {
+                username = User.Identity?.Name
+            });
         }
     }
 }
