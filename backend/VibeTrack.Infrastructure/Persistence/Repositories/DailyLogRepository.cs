@@ -16,6 +16,7 @@ namespace VibeTrack.Infrastructure.Persistence.Repositories
             return await _context.DailyLogs
                 .Include(l => l.DailyStats)
                 .ThenInclude(ds => ds.MoodLogs)
+                .ThenInclude(ml => ml.Mood)
                 .Where(l => l.UserId == userId)
                 .OrderByDescending(l => l.Date)
                 .ToListAsync();

@@ -77,6 +77,7 @@ namespace VibeTrack.Application.Services
                     LoggedAt = ml.LoggedAt,
                     DailyStatsId = ml.DailyStatsId,
                     Mood = ml.MoodId,
+                    MoodName = ml.Mood.Name,
                     EnergyLevel = ml.EnergyLevelId,
                     StressLevel = ml.StressLevelId
             })

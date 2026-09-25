@@ -38,6 +38,7 @@ namespace VibeTrack.Application.Services
                             LoggedAt = m.LoggedAt,
                             DailyStatsId = m.DailyStatsId,
                             Mood = m.MoodId,
+                            MoodName = m.Mood.Name,
                             EnergyLevel = m.EnergyLevelId,
                             StressLevel = m.StressLevelId
                         }).ToList()
@@ -122,6 +123,7 @@ namespace VibeTrack.Application.Services
                         LoggedAt = m.LoggedAt,
                         DailyStatsId = m.DailyStatsId,
                         Mood = m.MoodId,
+                        MoodName = m.Mood.Name,
                         EnergyLevel = m.EnergyLevelId,
                         StressLevel = m.StressLevelId
                     }).ToList() ?? new List<MoodLogDto>()

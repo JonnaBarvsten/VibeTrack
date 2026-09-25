@@ -14,6 +14,7 @@ namespace VibeTrack.Infrastructure.Persistence.Repositories
         public override async Task<List<MoodLog>> GetAllAsync()
         {
             return await _context.MoodLogs
+                 .Include(ml => ml.Mood)
                 .Include(ml => ml.DailyStats)
                 .ThenInclude(ds => ds.DailyLog)
                 .ToListAsync();

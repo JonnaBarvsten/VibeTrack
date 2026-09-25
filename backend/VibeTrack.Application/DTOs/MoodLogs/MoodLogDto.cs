@@ -7,6 +7,7 @@
         public int DailyStatsId { get; set; }
         public int EnergyLevel { get; set; }
         public int Mood { get; set; }
+        public string? MoodName { get; set; }
         public int StressLevel { get; set; }
     }
 }
