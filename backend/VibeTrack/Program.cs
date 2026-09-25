@@ -11,12 +11,13 @@ using VibeTrack.Domain.Interfaces;
 using VibeTrack.Infrastructure.Identity;
 using VibeTrack.Infrastructure.Persistence;
 using VibeTrack.Infrastructure.Persistence.Repositories;
+using VibeTrack.Infrastructure.Persistence.Seeders;
 
 namespace VibeTrack
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +59,6 @@ namespace VibeTrack
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    //ÄNDRA SEN TILL RÄTT LOCALHOST
                     policy.WithOrigins("http://localhost:5173")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
@@ -103,7 +103,8 @@ namespace VibeTrack
 
             var app = builder.Build();
 
-            RoleSeeder.SeedRolesAndAdminAsync(app.Services).GetAwaiter().GetResult();
+            await RoleSeeder.SeedRolesAndAdminAsync(app.Services);
+            await DataSeeder.SeedDataAsync(app.Services);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -114,6 +115,7 @@ namespace VibeTrack
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
             app.UseCors("AllowFrontend");
 
             app.UseAuthentication();
@@ -121,7 +123,7 @@ namespace VibeTrack
 
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
