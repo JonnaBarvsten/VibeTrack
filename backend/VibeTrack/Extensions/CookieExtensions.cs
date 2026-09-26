@@ -8,7 +8,7 @@
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None ,
                 Expires = DateTime.UtcNow.AddHours(7)
             };
 
@@ -16,7 +16,14 @@
         }
         public static void DeleteJwtCookie(this HttpResponse response)
         {
-            response.Cookies.Delete("Jwt");
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UtcNow.AddDays(-1)
+            };
+            response.Cookies.Delete("Jwt", cookieOptions );
         }
     }
 }
