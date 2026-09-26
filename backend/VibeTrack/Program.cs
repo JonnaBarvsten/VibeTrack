@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using VibeTrack.Api.Middleware;
 using VibeTrack.Application.Interfaces;
 using VibeTrack.Application.Services;
 using VibeTrack.Domain.Entities;
@@ -120,6 +121,8 @@ namespace VibeTrack
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             app.MapControllers();
 
