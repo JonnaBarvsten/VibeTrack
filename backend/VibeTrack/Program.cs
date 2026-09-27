@@ -117,7 +117,7 @@ namespace VibeTrack
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("AllowFrontend");
+            app.UseCors("Frontend");
 
             app.UseAuthentication();
             app.UseAuthorization();
