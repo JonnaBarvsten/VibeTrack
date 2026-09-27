@@ -17,8 +17,9 @@ namespace VibeTrack.Api.Middleware
             {
                 await next(context);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
                 var problemDetails = new ProblemDetails
