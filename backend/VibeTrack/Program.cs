@@ -58,9 +58,9 @@ namespace VibeTrack
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowFrontend", policy =>
+                options.AddPolicy("Frontend", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins(builder.Configuration["Frontend_Domain"])
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
