@@ -21,6 +21,7 @@ namespace VibeTrack
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            Console.WriteLine($"ConnectionString loaded: {!string.IsNullOrWhiteSpace(builder.Configuration["ConnectionString"])}");
 
             // Add services to the container.
 
