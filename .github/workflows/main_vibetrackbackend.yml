@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - vibetrackbackend
+name: Build and deploy ASP.Net Core app to Azure Web App - VibeTrackBackend
 
 on:
   push:
@@ -51,15 +51,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E6025E71297841F28D488836F0FA5573 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A91C35F77EB74C7BA1CF6E8AEE7B8B24 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4E476EFE600E4139859AC7D76FF108FB }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B91C94C5765C447586A54BCA3FA35DCE }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5C5149CCC35D44B090697B136387C013 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_760102DA613A4514AADEFC45CB1580A6 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'vibetrackbackend'
+          app-name: 'VibeTrackBackend'
           slot-name: 'Production'
           package: .
           
