@@ -21,7 +21,6 @@ namespace VibeTrack
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            Console.WriteLine($"ConnectionString loaded: {!string.IsNullOrWhiteSpace(builder.Configuration["ConnectionString"])}");
 
             // Add services to the container.
 
@@ -38,8 +37,7 @@ namespace VibeTrack
             .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<VibeTrackDbContext>();
 
-            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
-                ?? throw new InvalidOperationException("Jwt configuration is missing");
+            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("Jwt configuration is missing");
 
             builder.Services.AddSingleton(jwtSettings);
             builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -56,6 +54,7 @@ namespace VibeTrack
             builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             builder.Services.AddCors(options =>
             {
