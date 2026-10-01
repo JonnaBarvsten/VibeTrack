@@ -97,20 +97,5 @@ namespace VibeTrack.Application.Services
 
             return new AuthResponseDto { IsSuccess = false, Message = error };
         }
-
-        public async Task<bool> DeleteUserAsync(int id)
-        {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-
-            if (user == null)
-            {
-                return false;
-            }
-
-            await _userManager.DeleteAsync(user);
-
-            return true;
-        }
     }
 }

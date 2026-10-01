@@ -2,6 +2,7 @@
 using VibeTrack.Domain.Constans;
 using VibeTrack.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace VibeTrack.Infrastructure.Identity
 {
@@ -13,6 +14,7 @@ namespace VibeTrack.Infrastructure.Identity
 
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
             var adminRoleExists = await roleManager.RoleExistsAsync(Roles.Admin);
 
@@ -28,7 +30,8 @@ namespace VibeTrack.Infrastructure.Identity
                 await roleManager.CreateAsync(new IdentityRole<int>(Roles.User));
             }
 
-            var adminEmail = "admin@VibeTrack.com";
+            var adminEmail = configuration["AdminUser:Email"] ?? throw new InvalidOperationException("Admin email is missing.");
+            var adminPassword = configuration["AdminUser:Password"] ?? throw new InvalidOperationException("Admin password is missing.");
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
             if(adminUser == null)
@@ -42,7 +45,7 @@ namespace VibeTrack.Infrastructure.Identity
                     LastName = "Administrator"
                 };
 
-                var createResult = await userManager.CreateAsync(adminUser, "Admin123!");
+                var createResult = await userManager.CreateAsync(adminUser, adminPassword);
 
                 if (createResult.Succeeded)
                 {

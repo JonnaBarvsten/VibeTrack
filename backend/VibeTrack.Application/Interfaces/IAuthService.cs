@@ -6,6 +6,5 @@ namespace VibeTrack.Application.Interfaces
     {
         Task<AuthResponseDto> LoginAsync(LoginDto loginDto);
         Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto);
-        Task<bool> DeleteUserAsync(int id);
     }
 }
