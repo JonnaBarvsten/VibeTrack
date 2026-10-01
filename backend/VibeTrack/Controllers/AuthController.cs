@@ -64,9 +64,14 @@ namespace VibeTrack.Api.Controllers
         [Authorize]
         public IActionResult GetCurrentUser()
         {
+            var roles = User.FindAll(ClaimTypes.Role)
+                .Select(claim => claim.Value)
+                .ToList();
+
             return Ok(new
             {
-                username = User.Identity?.Name
+                username = User.Identity?.Name,
+                roles
             });
         }
     }
